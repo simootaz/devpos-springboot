@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Git') {
+            steps {
+                echo 'Pulling...'
+                git branch: 'adembenhamouda_Bloc', url: 'https://github.com/simootaz/devpos-springboot.git'
+            }
+        }
+
+        stage('Maven Build') {
+            steps {
+                echo 'Checking Maven version...'
+                sh 'mvn -version'
+            }
+        }
+
+        stage('Maven Build Project') {
+            steps {
+                echo 'Building the project...'
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('MVN SonarQube') {
+            steps {
+                echo '========Analyzing with SonarQube========'
+                withSonarQubeEnv('sonarserveur') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+    }
+}
