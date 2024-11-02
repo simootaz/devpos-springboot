@@ -21,25 +21,59 @@ spec:
         - containerPort: 3306
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: "root"
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: root-password
         - name: MYSQL_DATABASE
           value: "tpfoyer_db"
         volumeMounts:
         - name: mysql-storage
           mountPath: /var/lib/mysql
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
 
       - name: tp-foyer
         image: alachebil/tp-foyer:1.0.0
         ports:
         - containerPort: 8089
         env:
-        - name: SPRING_APPLICATION_JSON
-          value: '{
-            "spring.datasource.url" : "jdbc:mysql://mysqldb:3306/tpfoyer_db?createDatabaseIfNotExist=true",
-            "spring.datasource.username" : "root",
-            "spring.datasource.password" : "root",
-            "spring.jpa.hibernate.ddl-auto" : "update"
-          }'
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:mysql://mysqldb:3306/tpfoyer_db?createDatabaseIfNotExist=true"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "root"
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: root-password
+        - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+          value: "update"
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8089
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8089
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+
       volumes:
       - name: mysql-storage
         persistentVolumeClaim:
