@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: combined-deployment
+  name: tp-foyer-deployment
   labels:
-    app: combined-app
+    app: tp-foyer-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: combined-app
+      app: tp-foyer-app
   template:
     metadata:
       labels:
-        app: combined-app
+        app: tp-foyer-app
     spec:
       containers:
       - name: mysqldb
@@ -61,10 +61,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: combined-app-service
+  name: tp-foyer-app-service
 spec:
   selector:
-    app: combined-app
+    app: tp-foyer-app
   ports:
     - name: http-port
       protocol: TCP
