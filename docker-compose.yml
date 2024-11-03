@@ -15,7 +15,7 @@ services:
   app-timesheet:
     depends_on:
       - mysqldb
-    image: mootaz_bekri_backend_spring:1.0.0
+    image: mootazbekri/mootaz_bekri_backend_spring:latest
     #build: ./
     restart: on-failure
     ports:
