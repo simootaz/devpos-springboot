@@ -11,7 +11,6 @@ import tn.esprit.tpfoyer.entity.Universite;
 import tn.esprit.tpfoyer.repository.UniversiteRepository;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,12 +22,10 @@ class UniversityServiceImplMockTest {
 
     @Mock
     UniversiteRepository universiteRepository;
-    // Ou
-    //UniversiteRepository userRepository = Mockito.mock(universiteRepository.class);
 
 
     @InjectMocks
-    UniversiteServiceImpl UniversiteService;
+    UniversiteServiceImpl universiteService;
 
     Universite universite = new Universite("f1", "l1", "adresse1");
     List<Universite> listUsers = new ArrayList<Universite>() {
@@ -39,9 +36,9 @@ class UniversityServiceImplMockTest {
     };
 
     @Test
-    public void testRetrieveUser() {
+     void testRetrieveUser() {
         Mockito.when(universiteRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(universite));
-        Universite user1 = UniversiteService.retrieveUniversite(2l);
+        Universite user1 = universiteService.retrieveUniversite(2l);
         Assertions.assertNotNull(user1);
 
 
