@@ -59,6 +59,11 @@
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.12</version>
+        </dependency>
 
 
 
@@ -79,6 +84,8 @@
                     </excludes>
                 </configuration>
             </plugin>
+
+
         </plugins>
     </build>
     <!-- Deploy to Nexus -->
