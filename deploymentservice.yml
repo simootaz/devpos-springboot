@@ -1,3 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  type: ClusterIP  # Define the type of service (ClusterIP, NodePort, LoadBalancer)
+  ports:
+    - port: 3306
+      targetPort: 3306
+      protocol: TCP
+  selector:
+    app: mysql  # Ensure this matches the label in your MySQL deployment
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -6,7 +19,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mysql
+      app: mysql  # Ensure this label matches the selector in the service
   template:
     metadata:
       labels:
@@ -14,7 +27,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:8.0
+        image: mysql:8.3
         env:
           - name: MYSQL_ROOT_PASSWORD
             value: "root"
@@ -28,31 +41,7 @@ spec:
       volumes:
         - name: mysql-persistent-storage
           persistentVolumeClaim:
-            claimName: mysql-pvc
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mysql-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql
-spec:
-  ports:
-    - port: 3306
-  selector:
-    app: mysql
-
+            claimName: mysql-pvc  # Ensure this PVC is defined elsewhere in your configuration
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -82,18 +71,16 @@ spec:
             value: "root"
           - name: SPRING_JPA_HIBERNATE_DDL_AUTO
             value: "update"
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: tp-foyer
 spec:
-  selector:
-    app: tp-foyer
+  type: ClusterIP  # Define the type of service for your application
   ports:
-    - protocol: TCP
-      port: 8089
+    - port: 8089
       targetPort: 8089
-      type: NodePort
-      nodePort: 30001  # Expose the app externally on this port
+      protocol: TCP
+  selector:
+    app: tp-foyer  # Ensure this matches the label in your tp-foyer deployment
