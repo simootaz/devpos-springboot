@@ -11,7 +11,7 @@ services:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
-  app-timesheet:
+  app-foyer:
     depends_on:
       - mysqldb
     image: syrine2002/tp-foyer:5.0.0
