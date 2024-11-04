@@ -5,7 +5,7 @@ pipeline {
         stage('Git') {
             steps {
                 echo 'Pulling...'
-                git branch: 'adembenhamouda_Bloc', url: 'https://github.com/simootaz/devpos-springboot.git'
+                git branch: 'adembenhamouda_Bloc', url: 'https://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@github.com/simootaz/devpos-springboot.git'
             }
         }
 
