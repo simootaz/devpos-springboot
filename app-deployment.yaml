@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-timesheet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-timesheet
+  template:
+    metadata:
+      labels:
+        app: app-timesheet
+    spec:
+      containers:
+        - name: app-timesheet
+          image: mootazbekri/mootaz_bekri_backend_spring:1.0.0
+          ports:
+            - containerPort: 8089
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysqldb:3306/firstdatabase?createDatabaseIfNotExist=true"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "root"
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: "update"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-timesheet-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8089
+      targetPort: 8089
+  selector:
+    app: app-timesheet
