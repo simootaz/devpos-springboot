@@ -21,7 +21,7 @@ spec:
             - name: MYSQL_ROOT_PASSWORD
               value: "root"
             - name: MYSQL_DATABASE
-              value: "ee"
+              value: "root"
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: mysql-persistent-storage
