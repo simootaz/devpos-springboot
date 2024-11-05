@@ -23,7 +23,7 @@ spec:
             - name: SPRING_DATASOURCE_USERNAME
               value: "root"
             - name: SPRING_DATASOURCE_PASSWORD
-              value: "root"
+              value: "your_password_here"
             - name: SPRING_JPA_HIBERNATE_DDL_AUTO
               value: "update"
 
