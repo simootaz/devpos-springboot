@@ -5,7 +5,14 @@ pipeline {
         stage('Git') {
             steps {
                 echo 'Pulling...'
-                git branch: 'adembenhamouda_Bloc', url: 'https://github.com/simootaz/devpos-springboot.git'
+                checkout([$class: 'GitSCM',
+                    branches: [[name: '*/adembenhamouda_Bloc']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/simootaz/devpos-springboot.git',
+                        credentialsId: 'github-token'
+                    ]]
+                ])
+
             }
         }
 
